@@ -2,7 +2,6 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::fmt;
 
-use reqwest;
 use serde::{Deserialize, Serialize};
 use serde_json as json;
 use serde_urlencoded as url_encode;
@@ -42,7 +41,7 @@ impl Error for TWRSError {}
 /// For a description of these fields see the [Official Twilio Developer Documentation](https://www.twilio.com/docs/sms)
 /// All fields must exist so none of them is given the Serde ignore on None tag
 #[allow(non_snake_case)]
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default)]
 pub struct TwilioSend<'s> {
     pub Body: &'s str,
     pub r#From: &'s str,
@@ -52,11 +51,7 @@ pub struct TwilioSend<'s> {
 /// Creates a new instance of the body that is posted to the Twilio API
 impl<'s> TwilioSend<'s> {
     pub fn new() -> TwilioSend<'s> {
-        TwilioSend {
-            r#From: "",
-            To: "",
-            Body: "",
-        }
+        TwilioSend::default()
     }
 
     /// This function converts from the struct to a string of url encoded formatting
@@ -106,7 +101,7 @@ impl TwilioReply {
 
     /// Deserialize the response from a `&str`
     pub fn decode_str(response: &str) -> Result<TwilioReply, serde_json::error::Error> {
-        json::from_str(&response)
+        json::from_str(response)
     }
 }
 
