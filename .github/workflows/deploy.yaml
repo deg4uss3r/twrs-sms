@@ -21,6 +21,10 @@ jobs:
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
 
+      - name: Build Release
+        run: cargo build --release
+        shell: bash
+
       - name: Install cargo-audit
         run: cargo install cargo-audit --locked
         shell: bash
@@ -37,10 +41,6 @@ jobs:
         run: cargo semver-checks
         shell: bash
 
-      - name: Build Release
-        run: cargo build --Release
-        shell: bash
-      
       - name: Publish
         run: cargo publish --locked --token ${{ secrets.CratesToken }}
         shell: bash
