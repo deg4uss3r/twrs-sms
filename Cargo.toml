@@ -1,6 +1,6 @@
 [package]
 name = "twrs-sms"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Ricky (Degausser) <Ricky@Hosfe.lt>"]
 edition = "2024"
 keywords = ["twilio", "bot", "http", "POST", "sms"]
@@ -12,7 +12,7 @@ readme = "README.md"
 license-file = "LICENSE"
 
 [dependencies]
-reqwest = {version = "0.13.1", features = ["socks", "blocking"]}
+reqwest = {version = "0.13.1", features = ["socks", "blocking", "rustls"]}
 serde = {version = "1", features = ["derive"]}
 serde_urlencoded = "0.7"
 serde_json = "1"
