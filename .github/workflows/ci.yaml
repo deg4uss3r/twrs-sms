@@ -1,0 +1,50 @@
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+name: CI
+
+jobs:
+  check:
+    name: CI Suite
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - beta
+          - nightly
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+
+      - name: Install Rust 
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: clippy, rustfmt
+
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Lint
+        run: cargo fmt --all --check
+        shell: bash
+
+      - name: Clippy
+        run: cargo clippy -- -D warnings
+        shell: bash
+
+      - name: Build
+        run: cargo build
+        shell: bash
+
+      - name: Test
+        run: cargo test --all-features
+        shell: bash
